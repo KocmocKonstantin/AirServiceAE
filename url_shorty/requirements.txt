@@ -1,0 +1,1 @@
+Django==4.2.7\ndjango-restframework==3.14.0\npython-dotenv==1.0.0

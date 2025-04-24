@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Statistics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 1000px;
+        }
+        .url-container {
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">URL Statistics</h1>
+        
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Short URL</th>
+                                <th>Original URL</th>
+                                <th>Created At</th>
+                                <th>Visits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for url in urls %}
+                            <tr>
+                                <td><a href="{% url 'redirect' url.short_code %}" target="_blank">{{ request.scheme }}://{{ request.get_host }}/s/{{ url.short_code }}</a></td>
+                                <td class="url-container">{{ url.original_url }}</td>
+                                <td>{{ url.created_at|date:"d M Y, H:i" }}</td>
+                                <td>{{ url.access_count }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No URLs have been shortened yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">Back to Shortener</a>
+        </div>
+    </div>
+</body>
+</html> 
