@@ -1,0 +1,38 @@
+<h2>Обработанные билеты</h2>
+
+{% if tickets %}
+    <div class="tickets-list">
+        {% for ticket in tickets %}
+            <div class="ticket-item" style="border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 5px;">
+                <h3>Билет #{{ forloop.counter }}</h3>
+                
+                <div class="ticket-details">
+                    <p><strong>ФИО:</strong> {{ ticket.full_name|default:"Не найдено" }}</p>
+                    <p><strong>Рейс:</strong> {{ ticket.flight_number|default:"Не найден" }}</p>
+                    <p><strong>Маршрут:</strong> {{ ticket.departure_city|default:"Не найден" }} → {{ ticket.arrival_city|default:"Не найден" }}</p>
+                    <p><strong>Дата вылета:</strong> {{ ticket.departure_date|default:"Не найдена" }}</p>
+                    <p><strong>Время вылета:</strong> {{ ticket.departure_time|default:"Не найдено" }}</p>
+                    <p><strong>Место:</strong> {{ ticket.seat|default:"Не найдено" }}</p>
+                    <p><strong>Класс:</strong> {{ ticket.ticket_class|default:"Не найден" }}</p>
+                    <p><strong>Тип документа:</strong> {{ ticket.document_type }}</p>
+                    <p><strong>Загружен:</strong> {{ ticket.uploaded_at|date:"d.m.Y H:i" }}</p>
+                </div>
+                
+                {% if ticket.extracted_text %}
+                    <details style="margin-top: 10px;">
+                        <summary style="cursor: pointer; color: #007bff;">Показать извлеченный текст</summary>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 5px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; max-height: 200px; overflow-y: auto;">
+                            {{ ticket.extracted_text }}
+                        </div>
+                    </details>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Пока нет обработанных билетов.</p>
+{% endif %}
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'parser_ticket:upload' %}" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Загрузить ещё</a>
+</div>
